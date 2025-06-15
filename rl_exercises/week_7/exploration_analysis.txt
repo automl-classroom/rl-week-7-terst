@@ -1,0 +1,23 @@
+Exploration Analysis of RND DQN Agent
+======================================
+
+Method:
+-------
+To analyze the effect of exploration in the RND DQN agent, we collected and visualized agent trajectories at three points during training: early (10%), mid (50%), and late (100%). At each point, the agent was run for several episodes and its state trajectories were plotted.
+
+Findings:
+---------
+1. **Early Training (10%)**:
+   - The agent's trajectories are scattered and cover a wide area of the state space, indicating high exploration. The agent has not yet learned a focused policy and is visiting many novel states due to the RND bonus.
+
+2. **Mid Training (50%)**:
+   - The trajectories begin to show more structure, with the agent revisiting some states more frequently. Exploration is still present, but the agent starts to exploit rewarding regions while still seeking novelty.
+
+3. **Late Training (100%)**:
+   - The agent's trajectories become more focused and consistent, indicating that it has learned a policy that exploits the environment's rewards. Exploration is reduced as the agent converges to optimal or near-optimal behavior.
+
+Conclusion:
+-----------
+RND encourages strong exploration early in training, allowing the agent to discover diverse states. As training progresses, the agent shifts from exploration to exploitation, focusing on high-reward areas. This behavior is visible in the trajectory snapshots, which transition from scattered to focused over time.
+
+These visualizations provide clear evidence of the exploration-exploitation tradeoff and the effectiveness of RND in promoting exploration during reinforcement learning.

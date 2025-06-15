@@ -264,32 +264,35 @@ class DQNAgent(AbstractAgent):
         state, _ = self.env.reset()
         ep_reward = 0.0
         recent_rewards: List[float] = []
-
+        steps = []
+        episode_rewards = []
         for frame in range(1, num_frames + 1):
             action = self.predict_action(state)
             next_state, reward, done, truncated, _ = self.env.step(action)
-
-            # store and step
             self.buffer.add(state, action, reward, next_state, done or truncated, {})
             state = next_state
             ep_reward += reward
-
-            # update if ready
             if len(self.buffer) >= self.batch_size:
                 batch = self.buffer.sample(self.batch_size)
                 _ = self.update_agent(batch)
-
             if done or truncated:
                 state, _ = self.env.reset()
                 recent_rewards.append(ep_reward)
+                episode_rewards.append(ep_reward)
+                steps.append(frame)
                 ep_reward = 0.0
-                # logging
                 if len(recent_rewards) % 10 == 0:
                     avg = np.mean(recent_rewards[-10:])
                     print(
                         f"Frame {frame}, AvgReward(10): {avg:.2f}, ε={self.epsilon():.3f}"
                     )
+        # Save training data for rliable comparison
+        import pandas as pd
 
+        pd.DataFrame({"steps": steps, "rewards": episode_rewards}).to_csv(
+            f"dqn_training_data_seed_{getattr(self, 'seed', 0)}.csv",
+            index=False,
+        )
         print("Training complete.")
 
 

@@ -49,4 +49,5 @@ plt.gcf().canvas.manager.set_window_title(
 )
 plt.legend()
 plt.tight_layout()
+plt.savefig("iqm_sample_efficiency.png")
 plt.show()
